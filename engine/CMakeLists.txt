@@ -10,8 +10,6 @@ endif()
 
 add_executable(engine
   src/main.cpp
-  src/board.cpp
-  src/uci.cpp
 )
 
 if(MSVC)

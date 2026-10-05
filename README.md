@@ -12,8 +12,6 @@ cmake --build build
 ./build/engine
 ```
 
-Then type UCI commands, e.g. `uci`, `position startpos`, `d`, `go`, `quit`.
-
 ## Web
 
 ```sh
@@ -26,6 +24,7 @@ Currently plays against a random mover (`web/src/engine.ts`) until the engine is
 
 ## Roadmap
 
+0. Board representation, FEN parsing, UCI loop
 1. Move generation (bitboards) + `make_move` / `unmake_move`
 2. `perft` command, verified against known node counts
 3. Search: negamax + alpha-beta, iterative deepening, time management
