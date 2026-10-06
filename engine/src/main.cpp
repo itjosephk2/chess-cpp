@@ -1,5 +1,9 @@
 #include <iostream>
 
+void reset_board(int rows, int cols, char board[], char white_pieces_rank[], char black_pieces_rank[], char white_pawn, char black_pawn);
+void print_board(int rows, int cols, char board[]);
+void print_letter_rank(int cols);
+
 int main() {
   // Board
   constexpr int rows = 8;
@@ -26,6 +30,41 @@ int main() {
   char black_king = 'k';
   char black_pieces_rank[cols] = {black_rook, black_knight, black_bishop, black_queen, black_king, black_bishop, black_knight, black_rook};
 
+  // reset Board
+  reset_board(rows, cols, board, white_pieces_rank, black_pieces_rank, white_pawn, black_pawn);
+
+  // Printing Board
+  print_board(rows, cols, board);
+
+  // print letter rank
+  print_letter_rank(cols);
+  
+
+  std::cout << "\n";
+
+  return 0;
+}
+
+// print the ches board
+void print_board(int rows, int cols, char board[]) {
+  for (int i = 0; i < rows; i++) {
+    std::cout << rows - i << ' ';
+    for (int j = 0; j < cols; j++) {
+      std::cout << board[((rows - 1) - i) * cols + j] << ' ';
+    }
+    std::cout << "\n";
+  }
+}
+
+// print letters rank
+void print_letter_rank(int cols) {
+  std::cout << "  ";
+  for (int j = 0; j < cols; j++) {
+    std::cout << char('a' + j) << ' ';
+  }
+}
+
+void reset_board(int rows, int cols, char board[], char white_pieces_rank[], char black_pieces_rank[], char white_pawn, char black_pawn) {
   // Setting up the board
   // white pawns
   for (int i = cols; i < cols * 2; i++) {
@@ -47,21 +86,5 @@ int main() {
     board[i] = black_pieces_rank[i - (cols * (rows - 1))];
   }
 
-  // Printing Board
-  for (int i = 0; i < rows; i++) {
-    std::cout << rows - i << ' ';
-    for (int j = 0; j < cols; j++) {
-      std::cout << board[((rows - 1) - i) * cols + j] << ' ';
-    }
-    std::cout << "\n";
-  }
 
-  // File letters
-  std::cout << "  ";
-  for (int j = 0; j < cols; j++) {
-    std::cout << char('a' + j) << ' ';
-  }
-  std::cout << "\n";
-
-  return 0;
 }
