@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 
 // Function declarations: tell the compiler these functions exist, so main()
 // can call them before their full definitions appear further down the file.
@@ -7,6 +8,8 @@ void print_board(char board[]);
 void print_letter_rank();
 void make_move(char board[], int from, int to);
 int parse_square(char file, char rank);
+void play_move(char board[], std::string move);
+bool is_valid_move(std::string move);
 
 
 // Board size. constexpr = a constant known at compile time, so it can be used
@@ -53,11 +56,27 @@ int main() {
 
   std::cout << "\n\n";
 
-  make_move(board,  parse_square('e', '2'), parse_square('e', '4'));
+  // Game loop: ask for a move, play it, show the board, repeat until "quit".
+  // This will later become the engine's UCI loop, which reads commands the
+  // same way.
+  bool isGame = true;
+  while (isGame) {
 
-  // Printing Board
-  print_board(board);
-
+    std::cout << "Your Move: ";
+    std::string move;
+    std::cin >> move;  // waits for the user to type a word and press Enter
+    // Check for quit first, so "quit" is never treated as a move.
+    if (move == "quit") {
+      isGame = false;
+    }
+    else {
+      play_move(board, move);
+      std::cout << "\n";
+      print_board(board);
+      std::cout << "\n";
+    }
+    
+  }
   return 0;
 }
 
@@ -147,4 +166,45 @@ int parse_square(char file, char rank) {
   // std::cout << "Rank we are on: " << (rank - '1') << "\n";
   // std::cout << "square: " << file << rank << " = " << square; 
   return square;  
+}
+
+// Plays a move given as text, e.g. "e2e4" (from-square then to-square).
+// Text moves come from outside the program, so they are checked first;
+// invalid text is ignored. make_move does the actual moving.
+// A string can be indexed like an array: move[0] is 'e', move[1] is '2', ...
+void play_move(char board[], std::string move) {
+  if (is_valid_move(move)) {
+    int from = parse_square(move[0], move[1]);
+    int to = parse_square(move[2], move[3]);
+    make_move(board, from, to);
+  }
+}
+
+// Returns true if the text names two real squares on the board, e.g. "e2e4".
+// This only checks the text, not whether the move is legal in chess.
+// Without it, bad input like "e2" would read past the end of the string, and
+// "z9z9" or "i2e4" would give square numbers off the board (or wrap round to
+// the next row), so make_move would write to the wrong place.
+// Uses rows and cols, so it still works if the board size changes.
+bool is_valid_move(std::string move) {
+  // Must be exactly 4 characters. Check this first: the checks below read
+  // move[0] to move[3], which would be out of bounds on a shorter string.
+  if (move.size() != 4) {
+    return false;
+  }
+  // Files (move[0] and move[2]): column must be 0 up to cols - 1.
+  if (move[0] - 'a' < 0 || move[0] - 'a' >= cols) {
+    return false;
+  }
+  if (move[2] - 'a' < 0 || move[2] - 'a' >= cols) {
+    return false;
+  }
+  // Ranks (move[1] and move[3]): row must be 0 up to rows - 1.
+  if (move[1] - '1' < 0 || move[1] - '1' >= rows) {
+    return false;
+  }
+  if (move[3] - '1' < 0 || move[3] - '1' >= rows) {
+    return false;
+  }
+  return true;
 }
