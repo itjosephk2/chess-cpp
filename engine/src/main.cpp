@@ -6,6 +6,7 @@ void reset_board(char board[]);
 void print_board(char board[]);
 void print_letter_rank();
 void make_move(char board[], int from, int to);
+int parse_square(char file, char rank);
 
 
 // Board size. constexpr = a constant known at compile time, so it can be used
@@ -52,8 +53,7 @@ int main() {
 
   std::cout << "\n\n";
 
-  make_move(board,  12, 12 + (rows * 2));
-  make_move(board, 1, 50);
+  make_move(board,  parse_square('e', '2'), parse_square('e', '4'));
 
   // Printing Board
   print_board(board);
@@ -120,8 +120,31 @@ void reset_board(char board[]) {
 
 }
 
+// Moves whatever piece is on 'from' to 'to'. Anything already on 'to' is
+// overwritten, so captures work automatically. Does not check if the move
+// is legal.
 void make_move(char board[], int from, int to) {
+  // Save the piece first, so it's not lost when 'from' is emptied.
   char piece = board[from];
   board[from] = '.';
   board[to] = piece;
+}
+
+// Turns a square name like ('e', '2') into its board index (12).
+// Characters are stored as numbers in order, so subtracting gives the
+// distance: file - 'a' is the column (a = 0 ... h = 7) and rank - '1' is
+// the row (rank 1 = row 0). Note '1' is the character (stored as 49), not
+// the number 1.
+int parse_square(char file, char rank) {
+  int square = 0;
+
+  // square = column + row * cols
+  square = ((file - 'a') + (cols * (rank - '1')));
+  // Test Code: uncomment to print each part of the calculation
+  // std::cout << "file: " << (file - 'a') << "\n";
+  // std::cout << "Rank: " << (cols * (rank - '1')) << "\n";
+  // std::cout << "number of columns: " << cols << "\n";
+  // std::cout << "Rank we are on: " << (rank - '1') << "\n";
+  // std::cout << "square: " << file << rank << " = " << square; 
+  return square;  
 }
