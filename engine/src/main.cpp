@@ -86,7 +86,8 @@ int main() {
         white_to_move = !white_to_move;
       }
       else {
-        // Bad text, an empty square, or the other player's piece.
+        // Bad text, an empty square, the other player's piece, or moving
+        // onto your own piece.
         std::cout << "Invalid move\n\n";
       }
     }
@@ -188,16 +189,20 @@ bool play_move(char board[], std::string move, bool white_to_move) {
     int from = parse_square(move[0], move[1]);
     int to = parse_square(move[2], move[3]);
 
-    // Only move your own pieces. An empty square ('.') is neither white nor
-    // black, so moving from an empty square is refused by the same check.
+    // Only move your own pieces, and never onto your own piece.
+    // - from: must hold one of your pieces. An empty square ('.') is neither
+    //   white nor black, so moving from an empty square is refused too.
+    // - to: must NOT hold one of your pieces. Empty squares and enemy pieces
+    //   (captures) are allowed. This also refuses moving to the same square
+    //   (e.g. "e2e2"), since that square holds your own piece.
     if (white_to_move) {
-      if (is_white_piece(board[from])) {
+      if (is_white_piece(board[from]) && !is_white_piece(board[to])) {
         make_move(board, from, to);
         return true;
       }
     }
     else {
-      if (is_black_piece(board[from])) {
+      if (is_black_piece(board[from]) && !is_black_piece(board[to])) {
         make_move(board, from, to);
         return true;
       }
