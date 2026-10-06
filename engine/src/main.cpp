@@ -5,6 +5,7 @@
 void reset_board(char board[]);
 void print_board(char board[]);
 void print_letter_rank();
+void make_move(char board[], int from, int to);
 
 
 // Board size. constexpr = a constant known at compile time, so it can be used
@@ -49,7 +50,13 @@ int main() {
   print_letter_rank();
 
 
-  std::cout << "\n";
+  std::cout << "\n\n";
+
+  make_move(board,  12, 12 + (rows * 2));
+  make_move(board, 1, 50);
+
+  // Printing Board
+  print_board(board);
 
   return 0;
 }
@@ -111,4 +118,10 @@ void reset_board(char board[]) {
   }
 
 
+}
+
+void make_move(char board[], int from, int to) {
+  char piece = board[from];
+  board[from] = '.';
+  board[to] = piece;
 }
