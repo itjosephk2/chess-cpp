@@ -1,5 +1,27 @@
+# --- Dependencies ---
+# JavaScript packages installed by npm (re-downloadable, very large)
 node_modules/
+
+# --- Build output ---
+# Bundled/compiled web output
 dist/
+# CMake and general build folder
 build/
+# Visual Studio / CMake output folder
+out/
+# Compiled Windows programs
 *.exe
+# Compiled object files (MSVC)
+*.obj
+# Compiled object files (GCC/Clang)
+*.o
+# Debug symbol files (MSVC)
+*.pdb
+# Incremental linker files (MSVC)
+*.ilk
+
+# --- Editor settings ---
+# Visual Studio's local cache and settings
+.vs/
+# VS Code workspace settings
 .vscode/
