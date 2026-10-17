@@ -15,14 +15,18 @@ good practice for how matrices and tensors are laid out in memory.
 engine/
   CMakeLists.txt
   src/
-    board.h     constants (board size, pieces) and function declarations
-    board.cpp   board functions: setup, printing, moves, square conversion
-    main.cpp    the game loop
+    board.h       constants (board size, pieces) and board function declarations
+    board.cpp     the model: setup, moves, square conversion (never prints)
+    display.h     terminal view declarations
+    display.cpp   the view: prints the board to the terminal
+    main.cpp      the game loop
 ```
 
-`board.h` says what exists, `board.cpp` says how it works, and any file that
-needs the board functions includes `board.h`. This keeps `main` separate, so
-tests can use the board code without starting a game.
+Each `.h` says what exists, its `.cpp` says how it works, and any file that
+needs those functions includes the `.h`. Keeping `main` separate means tests
+can use the board code without starting a game. Keeping printing out of
+`board.cpp` means the board code works with any view: the terminal now, the
+web UI later.
 
 ### Build and run
 
@@ -41,7 +45,7 @@ compiler links them into one program:
 ```sh
 cd engine
 mkdir -p build
-c++ -std=c++20 -Wall -Wextra src/main.cpp src/board.cpp -o build/engine
+c++ -std=c++20 -Wall -Wextra src/main.cpp src/board.cpp src/display.cpp -o build/engine
 ./build/engine
 ```
 
@@ -72,7 +76,7 @@ Currently plays against a random mover (`web/src/engine.ts`) until the engine is
 
 ## Roadmap
 
-0. Board representation, FEN parsing, UCI loop *(in progress: board, game loop, square conversion and the board.h / board.cpp split done)*
+0. Board representation, FEN parsing, UCI loop *(in progress: board, game loop, square conversion, and the board / display split done)*
 1. Move generation (bitboards) + `make_move` / `unmake_move`
 2. `perft` command, verified against known node counts
 3. Search: negamax + alpha-beta, iterative deepening, time management

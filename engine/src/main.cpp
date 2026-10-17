@@ -1,5 +1,6 @@
 #include <iostream>
 #include "board.h"
+#include "display.h"
 
 int main() {
   // The board: one char per square. Square 0 is a1, 1 is b1, ... 7 is h1,

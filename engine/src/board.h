@@ -27,8 +27,6 @@ constexpr char black_pieces_rank[cols] = {black_rook, black_knight, black_bishop
 
 // Function declarations: 
 void reset_board(char board[]);
-void print_board(char board[]);
-void print_letter_rank();
 bool play_move(char board[], std::string move, bool white_to_move);
 void make_move(char board[], int from, int to);
 int parse_square(char file, char rank);
